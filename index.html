@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>اقتراح خلطة تغذية للمواشي</title>
+  <style>
+    body {
+      font-family: 'Arial';
+      direction: rtl;
+      margin: 30px auto;
+      max-width: 800px;
+      padding: 20px;
+      background-color: #f8f8f8;
+    }
+    h2 {
+      text-align: center;
+      color: #2e4a34;
+    }
+    label, input, select, textarea {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 8px;
+      font-size: 1rem;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #3e8e41;
+    }
+    #result {
+      margin-top: 20px;
+      background: #e0f4ea;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #b5ddc6;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #d9f0e2;
+      color: #333;
+    }
+    .animal-img {
+      width: 100px;
+      height: auto;
+      display: inline-block;
+      margin: 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .material-block {
+      position: relative;
+      margin-bottom: 15px;
+    }
+    .remove-material {
+      display: block;
+      width: 100%;
+      background-color: #e74c3c;
+      color: white;
+      padding: 10px;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    .remove-material:hover {
+      background-color: #c0392b;
+    }
+    .warning {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+      color: #856404;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>تركيبه علف</h2>
+
+  <label>النسبة المئوية المطلوبة للبروتين (%):</label>
+  <input type="number" id="targetProteinPercentage" placeholder="ادخل نسبة البروتين">
+
+  <label>الوزن المطلوب للخلطة (كجم):</label>
+  <input type="number" id="totalWeight" placeholder="ادخل الكميه المطلوبه">
+
+  <div id="materialInputs">
+    <div class="material-block">
+      <label>اختر المادة العلفية:</label>
+      <select class="material">
+        <option disabled selected>اختر</option>
+        <option value="ذرة صفراء" data-protein="8.8" data-energy="77" data-max="40">ذرة صفراء</option>
+        <option value="شعير" data-protein="10" data-energy="80" data-max="30">شعير</option>
+        <option value="قمح" data-protein="16.4" data-energy="74" data-max="10">قمح</option>
+        <option value="درّة" data-protein="10.6" data-energy="77" data-max="30">درّة</option>
+        <option value="نخالة قمح" data-protein="17.2" data-energy="62" data-max="12.5">نخالة قمح</option>
+        <option value="كسب فول صويا" data-protein="46.5" data-energy="71" data-max="12.5">كسب فول صويا</option>
+        <option value="كسب عباد شمس" data-protein="27.9" data-energy="65" data-max="10">كسب عباد شمس</option>
+        <option value="كسب بذرة القطن" data-protein="40.7" data-energy="60" data-max="5">كسب بذرة القطن</option>
+        <option value="برسيم مصري" data-protein="22" data-energy="80" data-max="25">برسيم مصري</option>
+        <option value="تبن قمح" data-protein="3.9" data-energy="46" data-max="15">تبن قمح</option>
+        <option value="قصب سكر" data-protein="5" data-energy="45" data-max="15">قصب سكر</option>
+        <option value="مولاس" data-protein="5.5" data-energy="77" data-max="5">مولاس</option>
+        <option value="لب حمضيات" data-protein="7" data-energy="68" data-max="7.5">لب حمضيات</option>
+        <option value="علف سمك" data-protein="67.8" data-energy="65" data-max="2.5">علف سمك</option>
+        <option value="دقيق دم" data-protein="93.9" data-energy="67" data-max="1.5">دقيق دم</option>
+        <option value="دقيق ريش" data-protein="85.7" data-energy="66" data-max="2.5">دقيق ريش</option>
+        <option value="جلوتين الذرة" data-protein="60" data-energy="83" data-max="5">جلوتين الذرة</option>
+        <option value="16%جلوتوفيد" data-protein="16" data-energy="65" data-max="7.5">جلوتوفيد</option>
+        <option value="رجيع كون" data-protein="12" data-energy="62" data-max="7.5">رجيع كون</option>
+        <option value="بلح جاف" data-protein="5" data-energy="72" data-max="5">بلح جاف</option>
+        <option value="دريس برسيم" data-protein="12" data-energy="55" data-max="15">دريس برسيم</option>
+        <option value="تبن شعير" data-protein="4" data-energy="45" data-max="15">تبن شعير</option>
+        <option value="سيلاج الذرة" data-protein="8" data-energy="65" data-max="35">سيلاج الذرة</option>
+        <option value="كسب بذرة الكتان" data-protein="35" data-energy="70" data-max="7.5">كسب بذرة الكتان</option>
+        <option value="كسب السمسم" data-protein="40" data-energy="75" data-max="10">كسب السمسم</option>
+        <option value="كسب بنجر السكر" data-protein="12" data-energy="60" data-max="5">كسب بنجر السكر</option>
+        <option value="قش الأرز" data-protein="3" data-energy="40" data-max="7.5">قش الأرز</option>
+        <option value="ردة أرز" data-protein="13" data-energy="68" data-max="5">ردة أرز</option>
+        <option value="عيش مصري" data-protein="11" data-energy="75" data-max="7.5">عيش مصري</option>
+      </select>
+      <button class="remove-material" onclick="removeMaterial(this)">❌ حذف المادة</button>
+    </div>
+  </div>
+
+  <button onclick="addMaterialField()">➕ إضافة مادة أخرى</button>
+  <button onclick="suggestMix()">✅ اقتراح الخلطة</button>
+
+  <div id="result"></div>
+
+  <div style="text-align: center">
+    <img class="animal-img" src="https://cdn-icons-png.flaticon.com/512/1998/1998592.png" alt="cow">
+    <img class="animal-img" src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="sheep">
+    <img class="animal-img" src="https://cdn-icons-png.flaticon.com/512/2504/2504273.png" alt="goat">
+  </div>
+
+  <script>
+    function addMaterialField() {
+      const container = document.createElement("div");
+      container.className = "material-block";
+      container.innerHTML = document.querySelector(".material-block").innerHTML;
+      document.getElementById("materialInputs").appendChild(container);
+    }
+
+    function removeMaterial(button) {
+      button.closest('.material-block').remove();
+    }
+
+    function suggestMix() {
+      const percentage = parseFloat(document.getElementById("targetProteinPercentage").value);
+      const totalWeight = parseFloat(document.getElementById("totalWeight").value);
+      const selects = document.querySelectorAll(".material-block select");
+
+      if (isNaN(percentage) || isNaN(totalWeight) || selects.length === 0) {
+        document.getElementById("result").innerText = "⚠️ الرجاء إدخال النسبة المئوية المطلوبة للبروتين، والوزن الكلي، واختيار المواد المتوفرة.";
+        return;
+      }
+
+      let portions = [];
+      let sumPortion = 0;
+      selects.forEach(select => {
+        const option = select.options[select.selectedIndex];
+        if (option && option.dataset) {
+          const name = option.value;
+          const protein = parseFloat(option.dataset.protein);
+          const energy = parseFloat(option.dataset.energy);
+          const maxPercent = parseFloat(option.dataset.max);
+          portions.push({ name, protein, energy, maxPercent });
+          sumPortion += maxPercent;
+        }
+      });
+
+      let totalProtein = 0;
+      let totalEnergy = 0;
+
+      let tableHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>المادة العلفية</th>
+              <th>الكمية (كجم)</th>
+              <th>بروتين %</th>
+              <th>طاقة %</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      portions.forEach(p => {
+        const actualAmount = (p.maxPercent / sumPortion) * totalWeight;
+        const proteinContribution = (p.protein / 100) * actualAmount;
+        const energyContribution = (p.energy / 100) * actualAmount;
+        totalProtein += proteinContribution;
+        totalEnergy += energyContribution;
+
+        tableHTML += `
+          <tr>
+            <td>${p.name}</td>
+            <td>${actualAmount.toFixed(2)}</td>
+            <td>${p.protein}%</td>
+            <td>${p.energy}%</td>
+          </tr>
+        `;
+      });
+
+      const proteinPercent = (totalProtein / totalWeight) * 100;
+      const energyPercent = (totalEnergy / totalWeight) * 100;
+
+      tableHTML += `
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="2">الإجمالي</th>
+              <th>${proteinPercent.toFixed(2)}%</th>
+              <th>${energyPercent.toFixed(2)}%</th>
+            </tr>
+          </tfoot>
+        </table>
+      `;
+
+      let resultHTML = tableHTML;
+
+      const diff = Math.abs(proteinPercent - percentage).toFixed(2);
+      if (diff > 1) {
+        resultHTML += `
+          <div class="warning">
+            ⚠️ النسبة المحققة للبروتين (${proteinPercent.toFixed(2)}%) تختلف عن المطلوبة (${percentage}%) بفارق قدره ${diff}%.<br>
+            💡 حاول تعديل المكونات بإضافة مواد ذات محتوى بروتين أعلى أو تقليل المكونات منخفضة البروتين للحصول على النسبة المطلوبة.
+          </div>
+        `;
+      }
+
+      document.getElementById("result").innerHTML = resultHTML;
+    }
+  </script>
+  <!-- [كل الكود السابق كما هو تمامًا، وحتى نهاية دالة suggestMix()] -->
+
+<script>
+  function addMaterialField() {
+    const container = document.createElement("div");
+    container.className = "material-block";
+    container.innerHTML = document.querySelector(".material-block").innerHTML;
+    document.getElementById("materialInputs").appendChild(container);
+  }
+
+  function removeMaterial(button) {
+    button.closest('.material-block').remove();
+  }
+
+  function suggestMix() {
+    const percentage = parseFloat(document.getElementById("targetProteinPercentage").value);
+    const totalWeight = parseFloat(document.getElementById("totalWeight").value);
+    const selects = document.querySelectorAll(".material-block select");
+
+    if (isNaN(percentage) || isNaN(totalWeight) || selects.length === 0) {
+      document.getElementById("result").innerHTML = `
+        <div class="warning">
+          ⚠️ الرجاء إدخال النسبة المئوية المطلوبة للبروتين، والوزن الكلي، واختيار المواد المتوفرة.
+        </div>`;
+      return;
+    }
+
+    let portions = [];
+    let sumPortion = 0;
+    selects.forEach(select => {
+      const option = select.options[select.selectedIndex];
+      if (option && option.dataset) {
+        const name = option.value;
+        const protein = parseFloat(option.dataset.protein);
+        const energy = parseFloat(option.dataset.energy);
+        const maxPercent = parseFloat(option.dataset.max);
+        portions.push({ name, protein, energy, maxPercent });
+        sumPortion += maxPercent;
+      }
+    });
+
+    let totalProtein = 0;
+    let totalEnergy = 0;
+
+    let tableHTML = `
+      <table>
+        <thead>
+          <tr>
+            <th>المادة العلفية</th>
+            <th>الكمية (كجم)</th>
+            <th>بروتين %</th>
+            <th>طاقة %</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    portions.forEach(p => {
+      const actualAmount = (p.maxPercent / sumPortion) * totalWeight;
+      const proteinContribution = (p.protein / 100) * actualAmount;
+      const energyContribution = (p.energy / 100) * actualAmount;
+      totalProtein += proteinContribution;
+      totalEnergy += energyContribution;
+
+      tableHTML += `
+        <tr>
+          <td>${p.name}</td>
+          <td>${actualAmount.toFixed(2)}</td>
+          <td>${p.protein}%</td>
+          <td>${p.energy}%</td>
+        </tr>
+      `;
+    });
+
+    const proteinPercent = (totalProtein / totalWeight) * 100;
+    const energyPercent = (totalEnergy / totalWeight) * 100;
+
+    tableHTML += `
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="2">الإجمالي</th>
+            <th>${proteinPercent.toFixed(2)}%</th>
+            <th>${energyPercent.toFixed(2)}%</th>
+          </tr>
+        </tfoot>
+      </table>
+    `;
+
+    let resultHTML = tableHTML;
+
+    const diff = (proteinPercent - percentage).toFixed(2);
+
+    if (Math.abs(diff) > 1) {
+      let suggestions = "<ul>";
+
+      if (diff < 0) {
+        // البروتين أقل من المطلوب
+        const highProtein = portions
+          .filter(p => p.protein > 25)
+          .map(p => `<li>زيادة كمية <strong>${p.name}</strong> (بروتينه ${p.protein}%)</li>`)
+          .join('');
+        suggestions += highProtein || "<li>أضف مواد ذات بروتين أعلى مثل كسب فول صويا، دقيق دم، أو جلوتين الذرة.</li>";
+      } else {
+        // البروتين أعلى من المطلوب
+        const highProtein = portions
+          .filter(p => p.protein > 25)
+          .map(p => `<li>تقليل كمية <strong>${p.name}</strong> (بروتينه ${p.protein}%)</li>`)
+          .join('');
+        const lowProtein = portions
+          .filter(p => p.protein < 10)
+          .map(p => `<li>إضافة مادة منخفضة البروتين مثل <strong>${p.name}</strong> (بروتينه ${p.protein}%)</li>`)
+          .join('');
+        suggestions += highProtein || "<li>قلل المواد عالية البروتين.</li>";
+        suggestions += lowProtein || "<li>أضف مواد منخفضة البروتين لتخفيف النسبة.</li>";
+      }
+
+      suggestions += "</ul>";
+
+      resultHTML += `
+        <div class="warning">
+          ⚠️ النسبة المحققة للبروتين <strong>${proteinPercent.toFixed(2)}%</strong> تختلف عن المطلوبة <strong>${percentage}%</strong> بفارق <strong>${Math.abs(diff)}%</strong>.
+          <br><br>
+          💡 <strong>اقتراحات لتحسين النسبة:</strong>
+          ${suggestions}
+        </div>
+      `;
+    }
+
+    document.getElementById("result").innerHTML = resultHTML;
+  }
+</script>
+
+</body>
+</html>
